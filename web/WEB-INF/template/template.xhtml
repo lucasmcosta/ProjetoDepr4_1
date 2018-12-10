@@ -1,0 +1,25 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+ xmlns:h="http://java.sun.com/jsf/html"
+ xmlns:f="http://java.sun.com/jsf/core"
+ xmlns:ui="http://java.sun.com/jsf/facelets" >
+ <h:head>
+ <title>Simulador de depreciação</title>
+ <h:outputStylesheet library="css" name="aluno.css" />
+ </h:head>
+ <h:body>
+ <div id="header">
+     <h:panelGrid columns="4" width="100%" bgcolor="#FFFFF" >
+ <h:graphicImage library="imagens" name="logotipo.png" width="300"/>
+ <h:link value="Cadastrar-se" outcome="cadastro"/>
+ <h:link value="Cursos Oferecidos" outcome="cursos"/>
+ <h:link value="Mátriculas Abertas" outcome="matriculas"/>
+ </h:panelGrid>
+ <hr/>
+ </div>
+ <ui:insert name ="conteudo"> O seu futuro começa aqui!! </ui:insert>
+ <div id="footer" style="text-align: center">
+ <hr/>
+ &copy; 2018 Faculdade Projeto. Todos os direitos reservados.
+ </div>
+ </h:body>
+</html>

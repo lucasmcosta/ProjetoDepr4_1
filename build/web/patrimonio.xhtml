@@ -1,0 +1,98 @@
+<ui:composition template="/WEB-INF/templates/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="conteudo">
+
+        <f:event listener="#{MBPatrimonio.carregarLista()}" type="preRenderView" />
+
+
+        <h:form>
+            <p:commandButton value="Novo" oncomplete="PF('dlgNovo').show();"
+                             actionListener="#{MBPatrimonio.estanciarPatrimonio()}"
+                             update=":frmNovo:pnlNovo :msgGlobal"/>
+        </h:form>
+
+
+
+
+        <h:form id="frmListaPatrimonio">
+            <p:dataTable id="tblListPatrimonio" widgetVar="tblLista"
+                         value="#{MBPatrimonio.listaP}" var="item"
+                         emptyMessage="Nenhum Registro encontrado" 
+                         paginator="true" rows="10" filteredValue="#{MBPatrimonio.listaFiltrada}">
+
+                <f:facet name="header">
+                    <h:outputText value="Lista de Patrimonios" />
+                </f:facet>
+
+                <p:column headerText="Codigo" filterBy="#{item.codigo}">
+                    <h:outputText value="#{item.codigo}"/>
+                </p:column>
+
+                <p:column headerText="Descricao" filterBy="#{item.descricao}">
+                    <h:outputText value="#{item.descricao}" />
+                </p:column>
+
+                <p:column headerText="Valor Bem" filterBy="#{item.valorBem}">
+                    <h:outputText value="#{item.valorBem}" />
+                </p:column>
+
+                <p:column headerText="Cliente" filterBy="#{item.cliente.nome}">
+                    <h:outputText value="#{item.cliente.nome}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+        <p:dialog widgetVar="dlgNovo" closable="true" draggable="false"
+                  resizable="false" header="Cadastrar Novo">
+            <h:form id="frmNovo">
+                <p:panelGrid id="pnlNovo" columns="02">
+                    <p:outputLabel value="Descricao"/>
+                    <h:inputText value="#{MBPatrimonio.pat.descricao}" size="30"/>
+                    <p:outputLabel value="Vida Util"/>
+                    <h:inputText value="#{MBPatrimonio.pat.vidaUtilB}" size="30"/>
+                    <p:outputLabel value="Valor Bem"/>                  
+                    <h:inputText value="#{MBPatrimonio.pat.valorBem}" size="30" />
+                    <p:outputLabel value="Valor Residual"/>
+                    <h:inputText value="#{MBPatrimonio.pat.valorResidual}" size="30"/>
+                    <p:outputLabel value="Data Aquisicao" />
+                    <h:inputText value="#{MBPatrimonio.pat.dataAquisicao}" size="30">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:inputText>
+                    <p:outputLabel value="Data Venda"/>
+                    <h:inputText value="#{MBPatrimonio.pat.dataVenda}" size="30">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:inputText>
+                    
+                    <p:outputLabel value="Valor da Venda"/>
+                    <h:inputText value="#{MBPatrimonio.pat.valorVenda}" size="30" />
+                    <p:outputLabel value="Situacao"/>
+                    <h:inputText value="#{MBPatrimonio.pat.situacao}" size="30" />
+                    <p:outputLabel value="Turnos"/>
+                    <h:inputText value="#{MBPatrimonio.pat.turno}" size="30" />
+                    <p:outputLabel value="status"/>
+                    <h:inputText value="#{MBPatrimonio.pat.status}" size="30" />
+                   
+                    <p:outputLabel value="Cliente"/>
+                    <p:selectOneMenu value="#{MBPatrimonio.pat.cliente}">
+                        <f:selectItem itemValue="" itemLabel="Cliente"/>
+                        <f:selectItems value="#{MBPatrimonio.listaC}" var="item"
+                                       itemValue="#{item.id}" itemLabel="#{item.nome}"/>
+                        
+                    </p:selectOneMenu>
+                </p:panelGrid>                
+
+                <p:panelGrid>
+                    <p:commandButton value="Gravar" actionListener="#{MBPatrimonio.novoPatrimonio()}"
+                                     update=":msgGlobal :frmListaPatrimonio:tblListPatrimonio"
+                                     oncomplete="PF('dlgNovo').hide(); tblLista.clearFilters();"/>
+                    <p:commandButton value="Cancelar" oncomplete="PF('dlgNovo').hide();"/>
+
+                </p:panelGrid>
+            </h:form>           
+        </p:dialog>        
+    </ui:define>
+</ui:composition>

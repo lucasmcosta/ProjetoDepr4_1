@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Simulador de depreciação</title>
+        <style>
+            body {
+
+                background-color: #cccccc;
+            }
+        </style>
+    </h:head> 
+    <h:body>
+        <p:growl id="msgGlobal" life="5000"/>
+        
+        <p:graphicImage library="imagens" name="logotipo.png" width="100"/> 
+        <h:form>
+            <p:menubar>
+                <p:submenu label="Menu">
+                    <p:menuitem value="Cadastrar patrimônio" outcome="patrimonio.xhtml"/> 
+                    <p:menuitem value="Calcular patrimônio ativo" outcome="/depreciacao.xhtml" />
+                    <p:menuitem value="Listagem de patrimônios" outcome="/patrimonio.xhtml" /> 
+                </p:submenu>
+                <p:menuitem value="Sobre o projeto" url="#" />
+            </p:menubar> 
+            <p:commandButton value="Sair" oncomplete="window.close()" />
+        </h:form>
+        <hr/>
+        <ui:insert name ="conteudo"> </ui:insert> 
+        <div id="footer" style="text-align: center">
+            <hr/>
+            2018 Faculdade Projeto. Todos os direitos reservados.
+        </div>
+    </h:body>
+</html>

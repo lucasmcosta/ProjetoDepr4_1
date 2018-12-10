@@ -1,0 +1,119 @@
+<ui:composition template="/WEB-INF/templates/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="conteudo">
+
+        <f:event listener="#{MBPatrimonio.carregarLista()}" type="preRenderView" />
+       
+
+        <h:form id="frmDepre">
+            <p:panelGrid columns ="4" id="pnlDepre" >
+                <p:outputLabel value="Bem Ativo:" for="campo-bem" />
+                <p:inputText value="#{MBPatrimonio.pat.descricao}" id="campo-bem" />
+                <p:outputLabel value="Data da aquisição:" for="campo-data" />
+                
+                <p:inputText value="#{MBPatrimonio.pat.dataAquisicao}" id="campo-data" >
+                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                </p:inputText>
+                
+                
+                <p:outputLabel value="Valor da aquisição:" for="campo-valor" />
+                <p:inputText value="#{MBPatrimonio.pat.valorBem}" id="campo-valor" />
+                <p:outputLabel value="Situação:" for="campo-situacao" />
+                <p:inputText value="#{MBPatrimonio.pat.situacao}" id="campo-situacao" />
+                <p:outputLabel value="Vida útil:" for="campo-vida" />
+                <p:inputText value="#{MBPatrimonio.pat.vidaUtilB}" id="campo-vida" />
+                <p:outputLabel value="Turnos trabalhados:" for="campo-turno" />
+                <p:inputText value="#{MBPatrimonio.pat.turno}" id="campo-turno" />
+                <p:outputLabel value="Valor residual:" for="campo-residual" />
+                <p:inputText value="#{MBPatrimonio.pat.valorResidual}" id="campo-residual" />
+                               
+                <p:commandButton value="Pesquisar Patrimonio" oncomplete="PF('dlgPesquisar').show();"
+                                 update=":frmListaPatrimonio:tblListPatrimonio :msgGlobal"/>
+
+                <p:commandButton value="Calcular" action="#{MBPatrimonio.calcular}"                                 
+                                 update=":frmCalculo:pnlCalculo :msgGlobal"
+                                 oncomplete="PF('dlgCalculo').show();">
+                    
+                    
+                </p:commandButton>
+            </p:panelGrid>
+        </h:form>
+
+        <p:dialog widgetVar="dlgPesquisar" closable="true" draggable="false"
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Pesquisar Bens">
+
+            <h:form id="frmListaPatrimonio">
+                <p:dataTable id="tblListPatrimonio" widgetVar="tblLista"
+                             value="#{MBPatrimonio.listaP}" var="item"
+                             emptyMessage="Nenhum Registro encontrado" 
+                             paginator="true" rows="10" filteredValue="#{MBPatrimonio.listaFiltrada}">
+                    <f:facet name="header">
+                        <h:outputText value="Lista de Patrimonios" />
+                    </f:facet>
+                    <p:column headerText="Codigo" filterBy="#{item.codigo}">
+                        <h:outputText value="#{item.codigo}" />
+                    </p:column>
+
+                    <p:column headerText="Descricao" filterBy="#{item.descricao}">
+                        <h:outputText value="#{item.descricao}" />
+                    </p:column>
+
+                    <p:column headerText="Valor Bem" filterBy="#{item.valorBem}">   
+                        <h:outputText value="#{item.valorBem}" />
+                    </p:column>
+
+                    <p:column headerText="Cliente" filterBy="#{item.cliente.nome}">
+                        <h:outputText value="#{item.cliente.nome}" />
+                    </p:column>
+                    <p:column headerText="Selecionar">
+                        <p:commandButton  icon="ui-icon-pencil" update=":frmDepre:pnlDepre" 
+                                          oncomplete="PF('dlgPesquisar').hide();">
+                            <f:setPropertyActionListener target="#{MBPatrimonio.pat}" value="#{item}"/>
+                            
+                        </p:commandButton>
+                    </p:column>                   
+                </p:dataTable>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgCalculo" closable="true" draggable="false"
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Calculos Depreciacao">
+            <h:form id="frmCalculo">
+                <p:panelGrid id="pnlCalculo" columns="04">
+                    <p:outputLabel value="Depreciacao Acumlada"/>
+                    <h:outputText value="#{MBPatrimonio.dp.depreAcumulada}"  />
+                    <p:outputLabel value="Valor Depreciacao anual"/>
+                    <h:outputText  value="#{MBPatrimonio.dp.vlDepreAnual}"/>
+                    <p:outputLabel value="Valor Depreciacao mensal" />
+                    <h:outputText  value="#{MBPatrimonio.dp.vlDepreMensal}"/>
+                    <p:outputLabel value="Valor Contabil"/>
+                    <h:outputText  value="#{MBPatrimonio.dp.valorContabil}"/>
+                    <p:outputLabel value="Valor do Lucro"/>
+                    <h:outputText value="#{MBPatrimonio.dp.saldo}"/>                
+                </p:panelGrid> 
+                
+                <p:panelGrid>
+                    <p:commandButton value="Gravar" actionListener="#{MBPatrimonio.salvar()}"
+                                     update=":msgGlobal"
+                                     oncomplete="PF('dlgCalculo').hide(); dlgCalculo.clearFilters(); "/>
+                    
+                    <p:commandButton value="Cancelar" oncomplete="PF('dlgCalculo').hide(); dlgCalculo.clearFilters(); " />
+                    
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>    
+
+
+
+
+
+
+
+    </ui:define>
+</ui:composition>

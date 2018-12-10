@@ -1,0 +1,25 @@
+<ui:composition template="/WEB-INF/templates/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="conteudo">
+        <f:event listener="#{MBCliente.estanciarCliente()}" type="preRenderView"/>
+        
+        <h:form id="frmCadastro">
+            <h3 style="font-weight:bold" >CADASTRAMENTO</h3>
+            <p:panelGrid id="pnlCadastro" columns="2" >
+            <h:outputLabel  value="Nome:" style="font-weight:bold"/>
+            <p:inputText  value="#{MBCliente.cliente.nome}"/>
+            
+            <h:outputLabel  value="CPF:" style="font-weight:bold"/>
+            <p:inputText  value="#{MBCliente.cliente.cpf}"/>
+           
+            <p:commandButton value="Adicionar" actionListener="#{MBCliente.cadastrarCliente()}"
+                             update=":frmCadastro:pnlCadastro :msgGlobal"/>
+           
+            </p:panelGrid>
+        </h:form>   
+    </ui:define>
+</ui:composition>
